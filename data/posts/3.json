@@ -29,12 +29,24 @@
   "coverImage": "https://github.com/user-attachments/assets/3163a033-647c-4d88-960d-5eb9be6c302b",
   "discussionUrl": "https://github.com/1564269628/open-wallpaper/discussions/3",
   "createdAt": "2026-07-31T02:57:40Z",
-  "updatedAt": "2026-07-31T03:15:55Z",
+  "updatedAt": "2026-07-31T08:39:31Z",
   "upvoteCount": 1,
-  "commentCount": 0,
-  "comments": [],
+  "commentCount": 1,
+  "comments": [
+    {
+      "id": "DC_kwDOToyz-84BEGP-",
+      "author": "1564269628",
+      "authorAvatar": "https://avatars.githubusercontent.com/u/73284979?v=4",
+      "body": "hh，很好看",
+      "url": "https://github.com/1564269628/open-wallpaper/discussions/3#discussioncomment-17851390",
+      "createdAt": "2026-07-31T08:39:31Z",
+      "updatedAt": "2026-07-31T08:39:31Z",
+      "replyCount": 0,
+      "replies": []
+    }
+  ],
   "source": "gpt原创",
-  "syncedAt": "2026-07-31T08:33:43.440Z",
+  "syncedAt": "2026-07-31T08:39:48.301Z",
   "coverThumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/3/0-6f3fc3246026.webp",
   "thumbnailBranch": "thumbnails",
   "thumbnailVersion": 1
