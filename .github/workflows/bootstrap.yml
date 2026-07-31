@@ -6,7 +6,13 @@ on:
     paths:
       - ".github/workflows/bootstrap.yml"
       - "scripts/bootstrap.mjs"
+      - "scripts/sync-discussions.mjs"
+      - "scripts/build-thumbnails.mjs"
+      - "scripts/thumbnail-utils.mjs"
+      - "scripts/restore-thumbnail-snapshot.sh"
+      - "scripts/publish-thumbnail-snapshot.sh"
       - "gallery.config.json"
+      - "package.json"
   workflow_dispatch:
 
 permissions:
@@ -14,10 +20,14 @@ permissions:
   discussions: write
   issues: write
 
+concurrency:
+  group: gallery-content-sync
+  cancel-in-progress: false
+
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -29,6 +39,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install image tooling
+        run: npm install --no-audit --no-fund
+
+      - name: Test parsers and helpers
+        run: npm test
+
       - name: Create labels and sample discussions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,9 +55,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/sync-discussions.mjs --full
 
+      - name: Restore and build thumbnail snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          THUMBNAIL_DIR: ${{ runner.temp }}/open-wallpaper-thumbnails
+          THUMBNAIL_BRANCH: thumbnails
+        shell: bash
+        run: |
+          bash scripts/restore-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
+          node scripts/build-thumbnails.mjs "$THUMBNAIL_DIR"
+
       - name: Commit generated post data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          THUMBNAIL_DIR: ${{ runner.temp }}/open-wallpaper-thumbnails
+          THUMBNAIL_BRANCH: thumbnails
         shell: bash
         run: |
           set -euo pipefail
@@ -52,19 +80,30 @@ jobs:
             git add data/posts
             if git diff --cached --quiet; then
               echo "No post data changed."
-              exit 0
+              break
             fi
             git commit -m "chore: bootstrap gallery data"
             if git push origin HEAD:main; then
-              exit 0
+              break
             fi
 
-            echo "Push raced with another workflow; rebuilding from the latest main branch (attempt $attempt)."
+            if [[ "$attempt" == "5" ]]; then
+              echo "Unable to push synchronized data." >&2
+              exit 1
+            fi
+
+            echo "Push raced with another workflow; rebuilding from latest main (attempt $attempt)."
             git fetch origin main
             git reset --hard origin/main
             node scripts/sync-discussions.mjs --full
+            bash scripts/restore-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
+            node scripts/build-thumbnails.mjs "$THUMBNAIL_DIR"
             sleep $((attempt * 2))
           done
 
-          echo "Unable to push synchronized data after multiple attempts." >&2
-          exit 1
+      - name: Publish history-free thumbnail branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          THUMBNAIL_DIR: ${{ runner.temp }}/open-wallpaper-thumbnails
+          THUMBNAIL_BRANCH: thumbnails
+        run: bash scripts/publish-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
