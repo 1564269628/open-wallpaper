@@ -37,9 +37,7 @@ export function extractImageUrls(markdown, allowedHosts = [], maxImages = 12) {
   ];
 
   for (const pattern of patterns) {
-    for (const match of markdown.matchAll(pattern)) {
-      candidates.push(match[1] || match[0]);
-    }
+    for (const match of markdown.matchAll(pattern)) candidates.push(match[1] || match[0]);
   }
 
   const unique = [];
@@ -57,21 +55,27 @@ export function parseDiscussionForm(body = "") {
   const headingPattern = /^###\s+(.+?)\s*$\n([\s\S]*?)(?=^###\s+|\s*$)/gm;
   for (const match of body.matchAll(headingPattern)) {
     const key = match[1].trim();
-    const value = match[2]
-      .replace(/<!--.*?-->/gs, "")
-      .trim();
+    const value = match[2].replace(/<!--.*?-->/gs, "").trim();
     if (value && value !== "_No response_") result[key] = value;
   }
   return result;
 }
 
 export function cleanDescription(text = "", maxLength = 320) {
-  return text
+  return String(text)
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/<[^>]+>/g, "")
     .replace(/^#{1,6}\s+/gm, "")
     .replace(/\[(.*?)\]\([^)]*\)/g, "$1")
     .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
+}
+
+export function cleanCommentBody(text = "", maxLength = 5000) {
+  return String(text)
+    .replace(/\u0000/g, "")
+    .replace(/\r\n?/g, "\n")
     .trim()
     .slice(0, maxLength);
 }
@@ -85,6 +89,22 @@ export function categoryFromDiscussion(discussion, prefix = "category:", mapping
   if (!formValue) return "other";
   const cleaned = cleanDescription(formValue, 64);
   return mappings[cleaned] || cleaned.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "") || "other";
+}
+
+export function commentToData(comment) {
+  if (!comment) return null;
+  const replies = (comment.replies?.nodes || []).map(commentToData).filter(Boolean);
+  return {
+    id: comment.id,
+    author: comment.author?.login || "ghost",
+    authorAvatar: comment.author?.avatarUrl || "",
+    body: cleanCommentBody(comment.bodyText || ""),
+    url: comment.url || "",
+    createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt,
+    replyCount: comment.replies?.totalCount || replies.length,
+    replies
+  };
 }
 
 export function discussionToPost(discussion, config) {
@@ -104,6 +124,7 @@ export function discussionToPost(discussion, config) {
       label !== config.submissionLabel &&
       !label.startsWith("status:")
   );
+  const comments = (discussion.comments?.nodes || []).map(commentToData).filter(Boolean);
 
   return {
     discussionNumber: discussion.number,
@@ -122,7 +143,8 @@ export function discussionToPost(discussion, config) {
     createdAt: discussion.createdAt,
     updatedAt: discussion.updatedAt,
     upvoteCount: discussion.upvoteCount || 0,
-    commentCount: discussion.comments?.totalCount || 0,
+    commentCount: discussion.comments?.totalCount || comments.length,
+    comments,
     source: cleanDescription(form["来源或作者"] || form["Source / author"] || "", 180),
     syncedAt: new Date().toISOString()
   };
