@@ -14,6 +14,12 @@
     "githubusercontent.com"
   ],
   "maxImagesPerDiscussion": 12,
+  "commentLimit": 30,
+  "replyLimit": 5,
+  "thumbnailBranch": "thumbnails",
+  "thumbnailWidth": 640,
+  "thumbnailQuality": 74,
+  "thumbnailMaxSourceBytes": 41943040,
   "categoryMappings": {
     "二次元": "anime",
     "摄影": "photography",
