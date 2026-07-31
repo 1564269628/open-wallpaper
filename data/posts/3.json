@@ -9,9 +9,12 @@
   "categorySlug": "show-and-tell",
   "labels": [
     "approved",
-    "submission"
+    "submission",
+    "category:anime"
   ],
-  "tags": [],
+  "tags": [
+    "category:anime"
+  ],
   "images": [
     "https://github.com/user-attachments/assets/3163a033-647c-4d88-960d-5eb9be6c302b"
   ],
@@ -22,5 +25,5 @@
   "upvoteCount": 1,
   "commentCount": 0,
   "source": "gpt原创",
-  "syncedAt": "2026-07-31T02:58:26.962Z"
+  "syncedAt": "2026-07-31T02:58:44.991Z"
 }
