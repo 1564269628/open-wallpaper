@@ -1,0 +1,21 @@
+{
+  "discussionNumber": 900002,
+  "title": "[预览] 霓虹少女",
+  "description": "用于预览分类、标签、瀑布流和多端布局的内置示例。",
+  "author": "open-wallpaper",
+  "authorAvatar": "",
+  "category": "anime",
+  "categoryName": "Show and tell",
+  "categorySlug": "show-and-tell",
+  "labels": ["approved", "category:anime", "content:ai"],
+  "tags": ["category:anime", "content:ai"],
+  "images": ["https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-anime.svg"],
+  "coverImage": "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-anime.svg",
+  "discussionUrl": "https://github.com/1564269628/open-wallpaper/discussions",
+  "createdAt": "2026-07-29T00:00:00Z",
+  "updatedAt": "2026-07-30T00:00:00Z",
+  "upvoteCount": 12,
+  "commentCount": 5,
+  "source": "Open Wallpaper 内置示例",
+  "syncedAt": "2026-07-31T00:00:00Z"
+}

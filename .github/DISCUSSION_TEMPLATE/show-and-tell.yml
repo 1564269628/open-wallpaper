@@ -1,0 +1,59 @@
+title: "[壁纸投稿] "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 投稿说明
+        把图片直接拖进下面的输入框。图片将由 GitHub 托管；管理员添加 `approved` 标签后，网站会自动公开展示。
+
+  - type: textarea
+    id: images
+    attributes:
+      label: 图片
+      description: 可上传 1～12 张图片，第一张作为封面。请使用 GitHub 上传产生的附件地址。
+      placeholder: 把图片拖到这里，等待上传完成后再提交……
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 分类
+      options:
+        - 二次元
+        - 摄影
+        - 插画
+        - 极简
+        - 风景
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 描述
+      description: 简要介绍画面、创作背景或适合的使用场景。
+      placeholder: 例如：安静的蓝色夜景，适合作为 16:9 桌面壁纸。
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 来源或作者
+      description: 原创请写“原创”；转载需给出作者或来源。
+      placeholder: 原创 / 作者名 / 来源链接
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: declaration
+    attributes:
+      label: 内容声明
+      options:
+        - label: 我拥有发布该图片的权利，或该图片允许公开分享。
+          required: true
+        - label: 图片不包含违法、露骨色情、恶意侵权或泄露隐私的内容。
+          required: true

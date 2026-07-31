@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="一个完全托管在 GitHub 上的开放壁纸社区">
+  <meta name="color-scheme" content="light dark">
+  <title>Open Wallpaper</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Open Wallpaper 首页">
+      <span class="brand-mark" aria-hidden="true">OW</span>
+      <span>
+        <strong>Open Wallpaper</strong>
+        <small>GitHub 原生壁纸社区</small>
+      </span>
+    </a>
+    <nav class="top-actions" aria-label="主要操作">
+      <button id="themeButton" class="icon-button" type="button" aria-label="切换主题">◐</button>
+      <a id="discussionsLink" class="ghost-button" href="https://github.com/1564269628/open-wallpaper/discussions" target="_blank" rel="noreferrer">讨论区</a>
+      <a id="submitLink" class="primary-button" href="https://github.com/1564269628/open-wallpaper/discussions/new?category=show-and-tell" target="_blank" rel="noreferrer">投稿壁纸</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div>
+        <p class="eyebrow">OPEN · FREE · GITHUB-POWERED</p>
+        <h1 id="heroTitle">把喜欢的画面，<br>留在开放的画廊里。</h1>
+        <p class="hero-copy">浏览无需登录。投稿、评论和点赞直接使用 GitHub Discussions；审核通过后，Actions 会自动同步到这里。</p>
+      </div>
+      <div class="hero-stat" aria-live="polite">
+        <span id="imageCount">—</span>
+        <small>已收录壁纸</small>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="筛选和排序">
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索标题、作者或标签" autocomplete="off">
+      </label>
+      <div id="categoryFilters" class="filter-row" aria-label="分类筛选"></div>
+      <label class="sort-box">
+        <span>排序</span>
+        <select id="sortSelect">
+          <option value="updated">最近更新</option>
+          <option value="newest">最新发布</option>
+          <option value="popular">最受欢迎</option>
+          <option value="comments">评论最多</option>
+        </select>
+      </label>
+    </section>
+
+    <section aria-live="polite">
+      <div id="status" class="status">正在读取公开画廊…</div>
+      <div id="gallery" class="gallery" aria-label="壁纸列表"></div>
+      <div id="emptyState" class="empty-state" hidden>
+        <strong>没有找到匹配的壁纸</strong>
+        <span>换个关键词或分类再试试。</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>数据来自 GitHub Discussions，由 GitHub Actions 自动生成。</span>
+    <a href="https://github.com/1564269628/open-wallpaper" target="_blank" rel="noreferrer">查看源代码 ↗</a>
+  </footer>
+
+  <dialog id="viewer" class="viewer">
+    <button id="closeViewer" class="viewer-close" type="button" aria-label="关闭">×</button>
+    <div class="viewer-media">
+      <img id="viewerImage" alt="">
+      <button id="previousImage" class="viewer-nav viewer-prev" type="button" aria-label="上一张">‹</button>
+      <button id="nextImage" class="viewer-nav viewer-next" type="button" aria-label="下一张">›</button>
+    </div>
+    <aside class="viewer-info">
+      <div id="viewerCategory" class="viewer-category"></div>
+      <h2 id="viewerTitle"></h2>
+      <p id="viewerDescription"></p>
+      <div id="viewerTags" class="viewer-tags"></div>
+      <dl class="viewer-meta">
+        <div><dt>投稿者</dt><dd id="viewerAuthor"></dd></div>
+        <div><dt>更新时间</dt><dd id="viewerDate"></dd></div>
+        <div><dt>互动</dt><dd id="viewerStats"></dd></div>
+      </dl>
+      <div class="viewer-actions">
+        <a id="downloadImage" class="primary-button" href="#" target="_blank" rel="noreferrer">打开原图</a>
+        <a id="openDiscussion" class="ghost-button" href="#" target="_blank" rel="noreferrer">评论与点赞</a>
+      </div>
+      <div id="viewerDots" class="viewer-dots" aria-label="图片切换"></div>
+    </aside>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

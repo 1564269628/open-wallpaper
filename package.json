@@ -1,0 +1,16 @@
+{
+  "name": "open-wallpaper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A GitHub Discussions powered static wallpaper gallery.",
+  "scripts": {
+    "test": "node --test",
+    "build": "node scripts/build-index.mjs",
+    "sync:full": "node scripts/sync-discussions.mjs --full"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
