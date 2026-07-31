@@ -1,0 +1,92 @@
+name: Sync discussions
+
+on:
+  discussion:
+    types: [created, edited, deleted, labeled, unlabeled, category_changed]
+  schedule:
+    - cron: "23 19 * * *"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "执行全量重建"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  discussions: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Test parser
+        run: npm test
+
+      - name: Synchronize changed Discussion
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
+          DISCUSSION_DELETED: ${{ github.event.action == 'deleted' }}
+          FORCE_FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$FORCE_FULL" == "true" ]]; then
+            node scripts/sync-discussions.mjs --full
+          elif [[ "$DISCUSSION_DELETED" == "true" ]]; then
+            node scripts/sync-discussions.mjs --deleted
+          else
+            node scripts/sync-discussions.mjs
+          fi
+
+      - name: Commit synchronized data with retry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
+          DISCUSSION_DELETED: ${{ github.event.action == 'deleted' }}
+          FORCE_FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]]@users.noreply.github.com"
+
+          for attempt in 1 2 3 4 5; do
+            git add data/posts
+            if git diff --cached --quiet; then
+              echo "Gallery data is already current."
+              exit 0
+            fi
+
+            git commit -m "chore: sync discussion data"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "Push raced with another synchronization; retrying from current main (attempt $attempt)."
+            git fetch origin main
+            git reset --hard origin/main
+            if [[ "$FORCE_FULL" == "true" ]]; then
+              node scripts/sync-discussions.mjs --full
+            elif [[ "$DISCUSSION_DELETED" == "true" ]]; then
+              node scripts/sync-discussions.mjs --deleted
+            else
+              node scripts/sync-discussions.mjs
+            fi
+            sleep $((attempt * 2))
+          done
+
+          echo "Unable to commit synchronized Discussion data." >&2
+          exit 1
