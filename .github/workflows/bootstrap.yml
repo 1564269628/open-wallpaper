@@ -1,0 +1,70 @@
+name: Bootstrap gallery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/bootstrap.yml"
+      - "scripts/bootstrap.mjs"
+      - "gallery.config.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  discussions: write
+  issues: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Create labels and sample discussions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/bootstrap.mjs
+
+      - name: Synchronize all approved discussions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-discussions.mjs --full
+
+      - name: Commit generated post data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3 4 5; do
+            git add data/posts
+            if git diff --cached --quiet; then
+              echo "No post data changed."
+              exit 0
+            fi
+            git commit -m "chore: bootstrap gallery data"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "Push raced with another workflow; rebuilding from the latest main branch (attempt $attempt)."
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/sync-discussions.mjs --full
+            sleep $((attempt * 2))
+          done
+
+          echo "Unable to push synchronized data after multiple attempts." >&2
+          exit 1
