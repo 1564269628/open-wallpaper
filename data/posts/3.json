@@ -10,10 +10,12 @@
   "labels": [
     "approved",
     "submission",
-    "category:anime"
+    "category:anime",
+    "content:ai"
   ],
   "tags": [
-    "category:anime"
+    "category:anime",
+    "content:ai"
   ],
   "images": [
     "https://github.com/user-attachments/assets/3163a033-647c-4d88-960d-5eb9be6c302b"
@@ -25,5 +27,5 @@
   "upvoteCount": 1,
   "commentCount": 0,
   "source": "gpt原创",
-  "syncedAt": "2026-07-31T03:03:42.418Z"
+  "syncedAt": "2026-07-31T03:11:24.180Z"
 }
