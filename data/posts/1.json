@@ -1,0 +1,29 @@
+{
+  "discussionNumber": 1,
+  "title": "[示例] 月光与远山",
+  "description": "用于验证 Discussion → Action → GitHub Pages 全链路的示例壁纸。",
+  "author": "github-actions",
+  "authorAvatar": "https://avatars.githubusercontent.com/in/15368?v=4",
+  "category": "landscape",
+  "categoryName": "Show and tell",
+  "categorySlug": "show-and-tell",
+  "labels": [
+    "approved",
+    "submission",
+    "category:landscape"
+  ],
+  "tags": [
+    "category:landscape"
+  ],
+  "images": [
+    "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-landscape.svg"
+  ],
+  "coverImage": "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-landscape.svg",
+  "discussionUrl": "https://github.com/1564269628/open-wallpaper/discussions/1",
+  "createdAt": "2026-07-31T02:44:05Z",
+  "updatedAt": "2026-07-31T02:44:05Z",
+  "upvoteCount": 0,
+  "commentCount": 0,
+  "source": "Open Wallpaper 内置示例",
+  "syncedAt": "2026-07-31T02:44:07.783Z"
+}

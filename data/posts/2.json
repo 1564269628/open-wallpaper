@@ -1,0 +1,31 @@
+{
+  "discussionNumber": 2,
+  "title": "[示例] 霓虹少女",
+  "description": "用于测试分类、标签、瀑布流预览和详情弹窗的示例壁纸。",
+  "author": "github-actions",
+  "authorAvatar": "https://avatars.githubusercontent.com/in/15368?v=4",
+  "category": "anime",
+  "categoryName": "Show and tell",
+  "categorySlug": "show-and-tell",
+  "labels": [
+    "approved",
+    "submission",
+    "category:anime",
+    "content:ai"
+  ],
+  "tags": [
+    "category:anime",
+    "content:ai"
+  ],
+  "images": [
+    "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-anime.svg"
+  ],
+  "coverImage": "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-anime.svg",
+  "discussionUrl": "https://github.com/1564269628/open-wallpaper/discussions/2",
+  "createdAt": "2026-07-31T02:44:06Z",
+  "updatedAt": "2026-07-31T02:44:06Z",
+  "upvoteCount": 0,
+  "commentCount": 0,
+  "source": "Open Wallpaper 内置示例",
+  "syncedAt": "2026-07-31T02:44:07.782Z"
+}
