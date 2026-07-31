@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { graphql, getRepositoryParts } from "./github-api.mjs";
@@ -8,6 +8,17 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const postsDir = path.join(root, "data", "posts");
 const config = JSON.parse(await readFile(path.join(root, "gallery.config.json"), "utf8"));
 const { owner, repo } = getRepositoryParts();
+const commentLimit = Math.max(1, Math.min(50, Number(config.commentLimit) || 30));
+const replyLimit = Math.max(1, Math.min(20, Number(config.replyLimit) || 5));
+
+const commentFields = `
+  id
+  bodyText
+  url
+  createdAt
+  updatedAt
+  author { login avatarUrl }
+`;
 
 const discussionFields = `
   number
@@ -20,15 +31,25 @@ const discussionFields = `
   author { login avatarUrl }
   category { name slug }
   labels(first: 50) { nodes { name } }
-  comments { totalCount }
+  comments(last: ${commentLimit}) {
+    totalCount
+    nodes {
+      ${commentFields}
+      replies(last: ${replyLimit}) {
+        totalCount
+        nodes { ${commentFields} }
+      }
+    }
+  }
 `;
 
 function isAccepted(discussion) {
   const approved = discussion.labels.nodes.some((label) => label.name === config.approvedLabel);
+  const hidden = discussion.labels.nodes.some((label) => label.name === "status:hidden");
   const categoryAccepted =
     config.acceptedCategorySlugs.length === 0 ||
     config.acceptedCategorySlugs.includes(discussion.category.slug);
-  return approved && categoryAccepted;
+  return approved && !hidden && categoryAccepted;
 }
 
 async function fetchOne(number) {
@@ -67,11 +88,7 @@ async function fetchAll() {
 
 async function writePost(post, directory = postsDir) {
   await mkdir(directory, { recursive: true });
-  await writeFile(
-    path.join(directory, `${post.discussionNumber}.json`),
-    `${JSON.stringify(post, null, 2)}\n`,
-    "utf8"
-  );
+  await writeFile(path.join(directory, `${post.discussionNumber}.json`), `${JSON.stringify(post, null, 2)}\n`, "utf8");
 }
 
 async function removePost(number) {
@@ -107,7 +124,7 @@ async function incrementalSync(number, deleted) {
   const discussion = await fetchOne(number);
   if (!discussion || !isAccepted(discussion)) {
     await removePost(number);
-    console.log(`Discussion #${number} is absent, unapproved, or outside accepted categories.`);
+    console.log(`Discussion #${number} is absent, unapproved, hidden, or outside accepted categories.`);
     return;
   }
 
