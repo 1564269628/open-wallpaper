@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   categoryFromDiscussion,
   cleanDescription,
+  commentToData,
   discussionToPost,
   extractImageUrls,
   isAllowedImageUrl,
@@ -48,7 +49,33 @@ test("uses category labels before form values", () => {
   assert.equal(categoryFromDiscussion(discussion, "category:"), "anime");
 });
 
-test("converts a discussion into a safe post object", () => {
+test("maps comments and nested replies into safe plain text data", () => {
+  const mapped = commentToData({
+    id: "DC_1",
+    bodyText: "hello\r\nworld",
+    url: "https://github.com/o/r/discussions/1#discussioncomment-1",
+    createdAt: "2026-07-31T00:00:00Z",
+    updatedAt: "2026-07-31T00:00:00Z",
+    author: { login: "bob", avatarUrl: "https://avatars.githubusercontent.com/u/2" },
+    replies: {
+      totalCount: 1,
+      nodes: [{
+        id: "DC_2",
+        bodyText: "reply",
+        createdAt: "2026-07-31T01:00:00Z",
+        updatedAt: "2026-07-31T01:00:00Z",
+        author: { login: "alice", avatarUrl: "https://avatars.githubusercontent.com/u/1" },
+        replies: { totalCount: 0, nodes: [] }
+      }]
+    }
+  });
+  assert.equal(mapped.author, "bob");
+  assert.equal(mapped.body, "hello\nworld");
+  assert.equal(mapped.replyCount, 1);
+  assert.equal(mapped.replies[0].author, "alice");
+});
+
+test("converts a discussion into a post with comments", () => {
   const post = discussionToPost(
     {
       number: 12,
@@ -61,13 +88,24 @@ test("converts a discussion into a safe post object", () => {
       author: { login: "alice", avatarUrl: "https://avatars.githubusercontent.com/u/1" },
       category: { name: "Show and tell", slug: "show-and-tell" },
       labels: { nodes: [{ name: "approved" }, { name: "category:anime" }] },
-      comments: { totalCount: 2 }
+      comments: {
+        totalCount: 2,
+        nodes: [{
+          id: "DC_1",
+          bodyText: "好看",
+          createdAt: "2026-07-31T01:00:00Z",
+          updatedAt: "2026-07-31T01:00:00Z",
+          author: { login: "bob", avatarUrl: "" },
+          replies: { totalCount: 0, nodes: [] }
+        }]
+      }
     },
     config
   );
   assert.equal(post.title, "测试壁纸");
   assert.equal(post.category, "anime");
   assert.equal(post.commentCount, 2);
+  assert.equal(post.comments[0].body, "好看");
   assert.equal(post.description, "**漂亮** 的壁纸");
 });
 
