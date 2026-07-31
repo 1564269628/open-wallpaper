@@ -13,36 +13,33 @@
   <header class="topbar">
     <a class="brand" href="./" aria-label="Open Wallpaper 首页">
       <span class="brand-mark" aria-hidden="true">OW</span>
-      <span>
+      <span class="brand-copy">
         <strong>Open Wallpaper</strong>
         <small>GitHub 原生壁纸社区</small>
       </span>
     </a>
+    <label class="header-search">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="搜索壁纸、作者或标签" autocomplete="off">
+    </label>
     <nav class="top-actions" aria-label="主要操作">
       <button id="themeButton" class="icon-button" type="button" aria-label="切换主题">◐</button>
-      <a id="discussionsLink" class="ghost-button" href="https://github.com/1564269628/open-wallpaper/discussions" target="_blank" rel="noreferrer">讨论区</a>
-      <a id="submitLink" class="primary-button" href="https://github.com/1564269628/open-wallpaper/discussions/new?category=show-and-tell" target="_blank" rel="noreferrer">投稿壁纸</a>
+      <a id="discussionsLink" class="ghost-button" href="#" target="_blank" rel="noreferrer">讨论区</a>
+      <a id="submitLink" class="primary-button" href="#" target="_blank" rel="noreferrer">投稿</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero" aria-labelledby="heroTitle">
+    <section class="intro" aria-labelledby="pageTitle">
       <div>
-        <p class="eyebrow">OPEN · FREE · GITHUB-POWERED</p>
-        <h1 id="heroTitle">把喜欢的画面，<br>留在开放的画廊里。</h1>
-        <p class="hero-copy">浏览无需登录。投稿、评论和点赞直接使用 GitHub Discussions；审核通过后，Actions 会自动同步到这里。</p>
+        <p class="eyebrow">DISCOVER · SHARE · OPEN</p>
+        <h1 id="pageTitle">发现下一张桌面壁纸</h1>
+        <p>浏览无需登录；投稿、审核和评论继续由 GitHub Discussions 承担。</p>
       </div>
-      <div class="hero-stat" aria-live="polite">
-        <span id="imageCount">—</span>
-        <small>已收录壁纸</small>
-      </div>
+      <div class="intro-count" aria-live="polite"><strong id="imageCount">—</strong><span>篇投稿</span></div>
     </section>
 
     <section class="toolbar" aria-label="筛选和排序">
-      <label class="search-box">
-        <span aria-hidden="true">⌕</span>
-        <input id="searchInput" type="search" placeholder="搜索标题、作者或标签" autocomplete="off">
-      </label>
       <div id="categoryFilters" class="filter-row" aria-label="分类筛选"></div>
       <label class="sort-box">
         <span>排序</span>
@@ -66,33 +63,55 @@
   </main>
 
   <footer>
-    <span>数据来自 GitHub Discussions，由 GitHub Actions 自动生成。</span>
+    <span>帖子、评论与作者数据来自 GitHub Discussions。</span>
     <a href="https://github.com/1564269628/open-wallpaper" target="_blank" rel="noreferrer">查看源代码 ↗</a>
   </footer>
 
-  <dialog id="viewer" class="viewer">
-    <button id="closeViewer" class="viewer-close" type="button" aria-label="关闭">×</button>
-    <div class="viewer-media">
-      <img id="viewerImage" alt="">
-      <button id="previousImage" class="viewer-nav viewer-prev" type="button" aria-label="上一张">‹</button>
-      <button id="nextImage" class="viewer-nav viewer-next" type="button" aria-label="下一张">›</button>
+  <dialog id="viewer" class="viewer" aria-labelledby="viewerTitle">
+    <div class="viewer-shell">
+      <section class="viewer-media" aria-label="原图预览">
+        <button id="closeViewer" class="viewer-close" type="button" aria-label="关闭">×</button>
+        <div id="viewerLoading" class="viewer-loading">正在加载原图…</div>
+        <img id="viewerImage" alt="">
+        <button id="previousImage" class="viewer-nav viewer-prev" type="button" aria-label="上一张">‹</button>
+        <button id="nextImage" class="viewer-nav viewer-next" type="button" aria-label="下一张">›</button>
+        <div id="viewerDots" class="viewer-dots" aria-label="图片切换"></div>
+      </section>
+
+      <aside class="viewer-panel">
+        <header class="author-block">
+          <img id="viewerAuthorAvatar" class="author-avatar" alt="">
+          <div>
+            <a id="viewerAuthorLink" href="#" target="_blank" rel="noreferrer"></a>
+            <span id="viewerDate"></span>
+          </div>
+          <a id="openDiscussionTop" class="follow-button" href="#" target="_blank" rel="noreferrer">查看帖子</a>
+        </header>
+
+        <div class="viewer-scroll">
+          <section class="post-detail">
+            <div id="viewerCategory" class="viewer-category"></div>
+            <h2 id="viewerTitle"></h2>
+            <p id="viewerDescription"></p>
+            <div id="viewerTags" class="viewer-tags"></div>
+            <div id="viewerStats" class="viewer-stats"></div>
+          </section>
+
+          <section class="comments-section" aria-labelledby="commentsTitle">
+            <div class="section-heading">
+              <h3 id="commentsTitle">评论</h3>
+              <span id="viewerCommentSummary"></span>
+            </div>
+            <div id="viewerComments" class="comment-list"></div>
+          </section>
+        </div>
+
+        <footer class="viewer-actions">
+          <a id="downloadImage" class="ghost-button" href="#" target="_blank" rel="noreferrer">打开原图</a>
+          <a id="openDiscussion" class="primary-button" href="#" target="_blank" rel="noreferrer">去 GitHub 评论</a>
+        </footer>
+      </aside>
     </div>
-    <aside class="viewer-info">
-      <div id="viewerCategory" class="viewer-category"></div>
-      <h2 id="viewerTitle"></h2>
-      <p id="viewerDescription"></p>
-      <div id="viewerTags" class="viewer-tags"></div>
-      <dl class="viewer-meta">
-        <div><dt>投稿者</dt><dd id="viewerAuthor"></dd></div>
-        <div><dt>更新时间</dt><dd id="viewerDate"></dd></div>
-        <div><dt>互动</dt><dd id="viewerStats"></dd></div>
-      </dl>
-      <div class="viewer-actions">
-        <a id="downloadImage" class="primary-button" href="#" target="_blank" rel="noreferrer">打开原图</a>
-        <a id="openDiscussion" class="ghost-button" href="#" target="_blank" rel="noreferrer">评论与点赞</a>
-      </div>
-      <div id="viewerDots" class="viewer-dots" aria-label="图片切换"></div>
-    </aside>
   </dialog>
 
   <script type="module" src="app.js"></script>
