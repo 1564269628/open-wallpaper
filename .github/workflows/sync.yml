@@ -3,6 +3,8 @@ name: Sync discussions
 on:
   discussion:
     types: [created, edited, deleted, labeled, unlabeled, category_changed]
+  discussion_comment:
+    types: [created, edited, deleted]
   schedule:
     - cron: "23 19 * * *"
   workflow_dispatch:
@@ -16,10 +18,14 @@ permissions:
   contents: write
   discussions: read
 
+concurrency:
+  group: gallery-content-sync
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -31,15 +37,34 @@ jobs:
         with:
           node-version: 22
 
-      - name: Test parser
+      - name: Install image tooling
+        run: npm install --no-audit --no-fund
+
+      - name: Test parsers and helpers
         run: npm test
+
+      - name: Resolve event details
+        shell: bash
+        run: |
+          set -euo pipefail
+          number="$(jq -r '.discussion.number // .comment.discussion.number // 0' "$GITHUB_EVENT_PATH")"
+          force_full=false
+          deleted=false
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" || "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            force_full=true
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == "discussion" && "$(jq -r '.action // ""' "$GITHUB_EVENT_PATH")" == "deleted" ]]; then
+            deleted=true
+          fi
+          echo "DISCUSSION_NUMBER=$number" >> "$GITHUB_ENV"
+          echo "DISCUSSION_DELETED=$deleted" >> "$GITHUB_ENV"
+          echo "FORCE_FULL=$force_full" >> "$GITHUB_ENV"
+          echo "THUMBNAIL_DIR=$RUNNER_TEMP/open-wallpaper-thumbnails" >> "$GITHUB_ENV"
+          echo "THUMBNAIL_BRANCH=thumbnails" >> "$GITHUB_ENV"
 
       - name: Synchronize changed Discussion
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
-          DISCUSSION_DELETED: ${{ github.event.action == 'deleted' }}
-          FORCE_FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -51,12 +76,17 @@ jobs:
             node scripts/sync-discussions.mjs
           fi
 
+      - name: Restore and build thumbnail snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          bash scripts/restore-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
+          node scripts/build-thumbnails.mjs "$THUMBNAIL_DIR"
+
       - name: Commit synchronized data with retry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
-          DISCUSSION_DELETED: ${{ github.event.action == 'deleted' }}
-          FORCE_FULL: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -67,15 +97,20 @@ jobs:
             git add data/posts
             if git diff --cached --quiet; then
               echo "Gallery data is already current."
-              exit 0
+              break
             fi
 
             git commit -m "chore: sync discussion data"
             if git push origin HEAD:main; then
-              exit 0
+              break
             fi
 
-            echo "Push raced with another synchronization; retrying from current main (attempt $attempt)."
+            if [[ "$attempt" == "5" ]]; then
+              echo "Unable to commit synchronized Discussion data." >&2
+              exit 1
+            fi
+
+            echo "Push raced with another change; rebuilding from current main (attempt $attempt)."
             git fetch origin main
             git reset --hard origin/main
             if [[ "$FORCE_FULL" == "true" ]]; then
@@ -85,8 +120,12 @@ jobs:
             else
               node scripts/sync-discussions.mjs
             fi
+            bash scripts/restore-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
+            node scripts/build-thumbnails.mjs "$THUMBNAIL_DIR"
             sleep $((attempt * 2))
           done
 
-          echo "Unable to commit synchronized Discussion data." >&2
-          exit 1
+      - name: Publish history-free thumbnail branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish-thumbnail-snapshot.sh "$THUMBNAIL_DIR"
