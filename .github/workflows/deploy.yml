@@ -29,7 +29,7 @@ jobs:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
-      pages-enabled: ${{ steps.pages-check.outputs.enabled }}
+      pages_enabled: ${{ steps.pages_check.outputs.enabled }}
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v6
@@ -50,7 +50,7 @@ jobs:
         run: npm run build
 
       - name: Check whether Pages is enabled
-        id: pages-check
+        id: pages_check
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -63,17 +63,17 @@ jobs:
           fi
 
       - name: Configure Pages
-        if: steps.pages-check.outputs.enabled == 'true'
+        if: steps.pages_check.outputs.enabled == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: steps.pages-check.outputs.enabled == 'true'
-        uses: actions/upload-pages-artifact@v3
+        if: steps.pages_check.outputs.enabled == 'true'
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
   deploy:
-    if: needs.build.outputs.pages-enabled == 'true'
+    if: needs.build.outputs.pages_enabled == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:
