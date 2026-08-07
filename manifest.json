@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-08-07T20:02:29.019Z",
+  "repository": "1564269628/open-wallpaper",
+  "branch": "thumbnails",
+  "count": 19,
+  "images": [
+    {
+      "discussionNumber": 1,
+      "index": 0,
+      "original": "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-landscape.svg",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/1/0-b453a9b70314.webp",
+      "relativePath": "thumbs/1/0-b453a9b70314.webp",
+      "width": 640,
+      "height": 400,
+      "bytes": 3682
+    },
+    {
+      "discussionNumber": 2,
+      "index": 0,
+      "original": "https://raw.githubusercontent.com/1564269628/open-wallpaper/main/site/assets/demo-anime.svg",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/2/0-a4967fc9e3e3.webp",
+      "relativePath": "thumbs/2/0-a4967fc9e3e3.webp",
+      "width": 640,
+      "height": 853,
+      "bytes": 11950
+    },
+    {
+      "discussionNumber": 3,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/3163a033-647c-4d88-960d-5eb9be6c302b",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/3/0-6f3fc3246026.webp",
+      "relativePath": "thumbs/3/0-6f3fc3246026.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 9404
+    },
+    {
+      "discussionNumber": 5,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/c2b8f5bc-2682-490f-aeb5-90f121534389",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/5/0-645e216aeb8b.webp",
+      "relativePath": "thumbs/5/0-645e216aeb8b.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 35358
+    },
+    {
+      "discussionNumber": 6,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/10dd448e-dc1d-449f-a9eb-1793ece8eb6a",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/6/0-bd661ee63e8a.webp",
+      "relativePath": "thumbs/6/0-bd661ee63e8a.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 19172
+    },
+    {
+      "discussionNumber": 6,
+      "index": 1,
+      "original": "https://github.com/user-attachments/assets/80d35057-2232-40f2-bfc5-3c6f3f8e0b70",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/6/1-066eb344b015.webp",
+      "relativePath": "thumbs/6/1-066eb344b015.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 19172
+    },
+    {
+      "discussionNumber": 7,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/b7a09387-d82d-43e1-b0a5-77f7bd352d54",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/7/0-f201a78bf8f5.webp",
+      "relativePath": "thumbs/7/0-f201a78bf8f5.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 34180
+    },
+    {
+      "discussionNumber": 8,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/faf2b7b2-7d44-4dfe-9788-8ed869a8f7a6",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/8/0-9f594103a318.webp",
+      "relativePath": "thumbs/8/0-9f594103a318.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 67782
+    },
+    {
+      "discussionNumber": 9,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/4927e7f8-e916-49d0-94b5-17f0b409c444",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/9/0-2f546713bf45.webp",
+      "relativePath": "thumbs/9/0-2f546713bf45.webp",
+      "width": 640,
+      "height": 274,
+      "bytes": 21402
+    },
+    {
+      "discussionNumber": 10,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/1de2f5e2-2c0b-4e8c-b01b-821f4ead0a3b",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/10/0-8214db8d2b6f.webp",
+      "relativePath": "thumbs/10/0-8214db8d2b6f.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 58214
+    },
+    {
+      "discussionNumber": 11,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/84f80081-8867-465a-a392-bfde95c0ccbd",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/11/0-9cecec26efe3.webp",
+      "relativePath": "thumbs/11/0-9cecec26efe3.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 9090
+    },
+    {
+      "discussionNumber": 12,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/dfd51926-6a4e-4ca9-84a5-e6b1fdd8c752",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/12/0-53970de44fbb.webp",
+      "relativePath": "thumbs/12/0-53970de44fbb.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 49690
+    },
+    {
+      "discussionNumber": 13,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/6ef01e9f-e522-47c2-af83-1992dd67bdce",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/13/0-cf846cfcbd58.webp",
+      "relativePath": "thumbs/13/0-cf846cfcbd58.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 39606
+    },
+    {
+      "discussionNumber": 14,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/c8a1aeba-5035-4f25-af92-2f041a65f4f7",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/14/0-17a74af5a8ca.webp",
+      "relativePath": "thumbs/14/0-17a74af5a8ca.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 20850
+    },
+    {
+      "discussionNumber": 15,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/3a887fc5-1c4c-4de6-be9f-3961b6080ef0",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/15/0-9e0b6db5c33d.webp",
+      "relativePath": "thumbs/15/0-9e0b6db5c33d.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 48734
+    },
+    {
+      "discussionNumber": 16,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/fd53f191-47bb-4352-bf8d-67b64df86760",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/16/0-32dc8459184a.webp",
+      "relativePath": "thumbs/16/0-32dc8459184a.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 31164
+    },
+    {
+      "discussionNumber": 17,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/2efd1430-b34f-477f-b559-2e8afdc59a92",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/17/0-c907a1153b82.webp",
+      "relativePath": "thumbs/17/0-c907a1153b82.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 29780
+    },
+    {
+      "discussionNumber": 18,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/960b9423-1277-41b4-96d1-a58185dfeea7",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/18/0-6cf167fd8e78.webp",
+      "relativePath": "thumbs/18/0-6cf167fd8e78.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 17488
+    },
+    {
+      "discussionNumber": 19,
+      "index": 0,
+      "original": "https://github.com/user-attachments/assets/7d87ab7f-d489-4d0d-8023-be96b9448abb",
+      "thumbnail": "https://raw.githubusercontent.com/1564269628/open-wallpaper/thumbnails/thumbs/19/0-9361293e11a9.webp",
+      "relativePath": "thumbs/19/0-9361293e11a9.webp",
+      "width": 640,
+      "height": 360,
+      "bytes": 55258
+    }
+  ]
+}
